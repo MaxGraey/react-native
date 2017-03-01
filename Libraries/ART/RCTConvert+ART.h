@@ -28,4 +28,6 @@
 + (CGColorRef)CGColor:(id)json offset:(NSUInteger)offset;
 + (CGGradientRef)CGGradient:(id)json offset:(NSUInteger)offset;
 
++ (CGBlendMode)CGBlendMode:(id)json;
+
 @end

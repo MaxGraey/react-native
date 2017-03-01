@@ -86,6 +86,7 @@ var RenderableAttributes = merge(NodeAttributes, {
   strokeCap: true,
   strokeJoin: true,
   strokeDash: { diff: arrayDiffer },
+  blendMode: true,
 });
 
 var ShapeAttributes = merge(RenderableAttributes, {
@@ -382,6 +383,40 @@ function extractStrokeJoin(strokeJoin) {
   }
 }
 
+function extractBlendMode(blendMode) {
+  switch (blendMode) {
+    case 'normal':           return 0;
+    case 'multiply':         return 1;
+    case 'screen':           return 2;
+    case 'overlay':          return 3;
+    case 'darken':           return 4;
+    case 'lighten':          return 5;
+    case 'color-dodge':      return 6;
+    case 'color-burn':       return 7;
+    case 'soft-light':       return 8;
+    case 'hard-light':       return 9;
+    case 'difference':       return 10;
+    case 'exclusion':        return 11;
+    case 'hue':              return 12;
+    case 'saturation':       return 13;
+    case 'color':            return 14;
+    case 'luminosity':       return 15;
+    case 'clear':            return 16;
+    case 'copy':             return 17;
+    case 'source-in':        return 18;
+    case 'source-out':       return 19;
+    case 'source-atop':      return 20;
+    case 'destination-over': return 21;
+    case 'destination-in':   return 22;
+    case 'destination-out':  return 23;
+    case 'destination-atop': return 24;
+    case 'xor':              return 25;
+    case 'plus-darker':      return 26;
+    case 'plus-lighter':     return 27;
+    default: return 0;
+  }
+}
+
 // Shape
 
 // Note: ART has a notion of width and height on Shape but AFAIK it's a noop in
@@ -396,6 +431,7 @@ class Shape extends React.Component {
       <NativeShape
         fill={extractBrush(props.fill, props)}
         opacity={extractOpacity(props)}
+        blendMode={extractBlendMode(props.blendMode)}
         stroke={extractColor(props.stroke)}
         strokeCap={extractStrokeCap(props.strokeCap)}
         strokeDash={props.strokeDash || null}
@@ -493,6 +529,7 @@ class Text extends React.Component {
       <NativeText
         fill={extractBrush(props.fill, props)}
         opacity={extractOpacity(props)}
+        blendMode={extractBlendMode(props.blendMode)}
         stroke={extractColor(props.stroke)}
         strokeCap={extractStrokeCap(props.strokeCap)}
         strokeDash={props.strokeDash || null}

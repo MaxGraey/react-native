@@ -57,6 +57,15 @@
   _strokeDash = strokeDash;
 }
 
+- (void)setBlendMode:(CGBlendMode)blendMode
+{
+  if (blendMode == _blendMode) {
+    return;
+  }
+  [self invalidate];
+  _blendMode = blendMode;
+}
+
 - (void)dealloc
 {
   CGColorRelease(_stroke);
@@ -69,7 +78,11 @@
 {
   if (self.opacity <= 0 || self.opacity >= 1 || (self.fill && self.stroke)) {
     // If we have both fill and stroke, we will need to paint this using normal compositing
+    CGContextSaveGState(context);
+    CGContextSetBlendMode(context, self.blendMode);
     [super renderTo: context];
+    CGContextRestoreGState(context);
+    
     return;
   }
   // This is a terminal with only one painting. Therefore we don't need to paint this
@@ -77,6 +90,7 @@
   CGContextSaveGState(context);
   CGContextConcatCTM(context, self.transform);
   CGContextSetAlpha(context, self.opacity);
+  CGContextSetBlendMode(context, self.blendMode);
   [self renderLayerTo:context];
   CGContextRestoreGState(context);
 }

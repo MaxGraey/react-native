@@ -221,4 +221,13 @@ RCT_ENUM_CONVERTER(CTTextAlignment, (@{
   return (CGGradientRef)CFAutorelease(gradient);
 }
 
++ (CGBlendMode)CGBlendMode:(id)json
+{
+  if (!json) {
+    return nil;
+  }
+  NSNumber* mode = [self NSNumber:json];
+  return (CGBlendMode)[mode intValue];
+}
+
 @end
